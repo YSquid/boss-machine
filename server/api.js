@@ -44,21 +44,23 @@ apiRouter.get("/minions/:minionId", (req, res, next) => {
 });
 
 //PUT minion by ID
+//update this to use body somehow - update postman request as well
+
 apiRouter.put("/minions/:minionId", (req, res, next) => {
   const id = req.params.minionId;
   const updatedInstance = {
     id: id,
-    name: req.query.name,
-    title: req.query.title,
-    weaknesses: req.query.weaknesses,
-    salary: req.query.salary,
+    name: req.body.name,
+    title: req.body.title,
+    weaknesses: req.body.weaknesses,
+    salary: req.body.salary,
   };
   response = db.updateInstanceInDatabase("minions", updatedInstance);
 
   if (response) {
     res.send(response);
   } else {
-    res.status(400).send("bad update request");
+    res.status(404).send("bad update request");
   }
 });
 
@@ -95,7 +97,7 @@ apiRouter.get("/ideas/", (req, res, next) => {
 
 //POST new idea
 apiRouter.post("/ideas/", (req, res, next) => {
-  const newIdea = req.query;
+  const newIdea = req.body;
   const response = db.addToDatabase("ideas", newIdea);
   if (response) {
     res.send(response);
