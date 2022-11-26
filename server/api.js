@@ -1,72 +1,9 @@
 const express = require("express");
 const apiRouter = express.Router();
 const db = require("./db.js");
+const minionsRouter = require("./minions.js");
 
-/**
- Minion Schema:
-  Minion:
-    id: string
-    name: string
-    title: string
-    salary: number
-**/
-
-//GET array of all minions
-apiRouter.get("/minions/", (req, res, next) => {
-  const response = db.getAllFromDatabase("minions");
-  if (response) {
-    res.send(response);
-  } else {
-    res.status(404).send("cannot GET minions");
-  }
-});
-
-//POST new minion to DB
-apiRouter.post("/minions/", (req, res, next) => {
-  const newMinion = db.addToDatabase("minions", req.body);
-  res.status(201).send(newMinion);
-});
-
-//GET single minion by ID
-apiRouter.get("/minions/:minionId", (req, res, next) => {
-  const id = req.params.minionId;
-  response = db.getFromDatabaseById("minions", id);
-  if (response) {
-    res.send(response);
-  } else {
-    res.status(404).send("No minion found for that id");
-  }
-});
-
-//PUT minion by ID
-apiRouter.put("/minions/:minionId", (req, res, next) => {
-  const id = req.params.minionId;
-  const updatedInstance = {
-    id: id,
-    name: req.body.name,
-    title: req.body.title,
-    weaknesses: req.body.weaknesses,
-    salary: req.body.salary,
-  };
-  response = db.updateInstanceInDatabase("minions", updatedInstance);
-
-  if (response) {
-    res.send(response);
-  } else {
-    res.status(404).send("bad update request");
-  }
-});
-
-//DELETE minion by ID
-apiRouter.delete("/minions/:minionId", (req, res, next) => {
-  const id = req.params.minionId;
-  const response = db.deleteFromDatabasebyId("minions", id);
-  if (response) {
-    res.status(204).send(response);
-  } else {
-    res.status(404).send("minion with that ID not found");
-  }
-});
+apiRouter.use('/minions/', minionsRouter)
 
 /**
  Idea Schema:
