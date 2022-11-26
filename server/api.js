@@ -23,10 +23,9 @@ apiRouter.get("/minions/", (req, res, next) => {
 
 //POST new minion to DB
 apiRouter.post("/minions/", (req, res, next) => {
-  const newMinion = db.addToDatabase('minions', req.body)
-  res.status(201).send(newMinion)
-})
-
+  const newMinion = db.addToDatabase("minions", req.body);
+  res.status(201).send(newMinion);
+});
 
 //GET single minion by ID
 apiRouter.get("/minions/:minionId", (req, res, next) => {
@@ -133,12 +132,39 @@ apiRouter.put("/ideas/:ideaId", (req, res, next) => {
 
 //DELETE idea by ID
 apiRouter.delete("/ideas/:ideaId", (req, res, next) => {
-    const id = req.params.ideaId;
-    const response = db.deleteFromDatabasebyId('ideas', id)
-    if (response) {
-        res.status(204).send(response)
-    } else {
-        res.status(404).send('idea not found')
-    }
+  const id = req.params.ideaId;
+  const response = db.deleteFromDatabasebyId("ideas", id);
+  if (response) {
+    res.status(204).send(response);
+  } else {
+    res.status(404).send("idea not found");
+  }
+});
+
+/*
+MEETING SCHEMA:
+Meeting
+  time: string
+  date: JS Date object
+  day: string
+  note: string
+*/
+
+//GET Meetings
+apiRouter.get("/meetings/", (req, res, next) => {
+  res.send(db.getAllFromDatabase("meetings"));
+});
+
+//POST Meeting
+apiRouter.post("/meetings/", (req, res, next) => {
+  const newMeeting = db.createMeeting()
+  res.status(201).send(db.addToDatabase("meetings", newMeeting))
+
+});
+
+//DELETE All Meetings
+apiRouter.delete("/meetings/", (req, res, body) => {
+  res.status(204).send(db.deleteAllFromDatabase('meetings'))
 })
+
 module.exports = apiRouter;
