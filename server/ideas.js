@@ -1,6 +1,7 @@
 const express = require("express");
 const db = require("./db.js");
 const ideasRouter = express.Router();
+const checkMillionDollarIdea = require('./checkMillionDollarIdea')
 
 module.exports = ideasRouter;
 
@@ -13,6 +14,7 @@ module.exports = ideasRouter;
     numWeeks: number
     weeklyRevenue: number
 **/
+
 
 //Idea by ID param
 ideasRouter.param('ideaId', (req, res, next, id) => {
@@ -36,7 +38,7 @@ ideasRouter.get("/", (req, res, next) => {
 });
 
 //POST new idea
-ideasRouter.post("/", (req, res, next) => {
+ideasRouter.post("/", checkMillionDollarIdea, (req, res, next) => {
   const newIdea = req.body;
   const response = db.addToDatabase("ideas", newIdea);
   if (response) {
