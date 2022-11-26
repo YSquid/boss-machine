@@ -54,7 +54,7 @@ ideasRouter.get("/:ideaId", (req, res, next) => {
 });
 
 //PUT idea by ID
-ideasRouter.put("/:ideaId", (req, res, next) => {
+ideasRouter.put("/:ideaId", checkMillionDollarIdea, (req, res, next) => {
   const id = req.params.ideaId;
   const { name, description, numWeeks, weeklyRevenue } = req.body;
   const updatedInstance = {
